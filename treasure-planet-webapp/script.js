@@ -3,7 +3,7 @@ const telegramUserId = urlParams.get('telegramUserId');
 
 if (telegramUserId) {
   // *** IMPORTANT: Replace with your ACTUAL backend URL ***
-  const backendUrl = 'http://78.47.217.78:3000'; // Or your domain name and port
+  const backendUrl = 'https://78.47.217.78:3000'; // Or your domain name and port
 
   fetch(`${backendUrl}/api/register`, {
     method: 'POST',
