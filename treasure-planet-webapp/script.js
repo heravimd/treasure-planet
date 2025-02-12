@@ -2,7 +2,10 @@ const urlParams = new URLSearchParams(window.location.search);
 const telegramUserId = urlParams.get('telegramUserId');
 
 if (telegramUserId) {
-  fetch('/api/register', { // Make sure the path is correct
+  // *** IMPORTANT: Replace with your ACTUAL backend URL ***
+  const backendUrl = 'http://78.47.217.78:3000'; // Or your domain name and port
+
+  fetch(`${backendUrl}/api/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -13,14 +16,11 @@ if (telegramUserId) {
   .then(data => {
     if (data.error) {
       console.error('Error registering user:', data.error);
-      // Handle the error (e.g., display an error message on the page)
       const errorMessage = document.createElement('p');
       errorMessage.textContent = "Error: " + data.error;
       document.body.appendChild(errorMessage);
-
     } else {
       console.log('User registered:', data.message);
-      // Proceed with your web app logic.  For now, just display a message:
       const successMessage = document.createElement('p');
       successMessage.textContent = "You're registered! Welcome to Treasure Planet!";
       document.body.appendChild(successMessage);

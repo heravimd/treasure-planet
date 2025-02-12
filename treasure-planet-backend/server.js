@@ -2,11 +2,24 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-const mongoURI = 'mongodb+srv://heravimh:GinDNrQBzT6ioQi5@planet0.xk6x7.mongodb.net/?retryWrites=true&w=majority&appName=planet0'; // Your MongoDB URI
+// *** IMPORTANT: Use environment variables for sensitive info ***
+const mongoURI = process.env.MONGO_URI; // Get from environment variables
+const botToken = process.env.BOT_TOKEN; // Get from environment variables
+
+if (!mongoURI) {
+  console.error("mongodb+srv://heravimh:GinDNrQBzT6ioQi5@planet0.xk6x7.mongodb.net/?retryWrites=true&w=majority&appName=planet0");
+  process.exit(1);
+}
+
+if (!botToken) {
+  console.error("7635446802:AAHMViYqQ_zNB4_l0i8_voL9-LcKQuVPLOI");
+  process.exit(1);
+}
 
 async function connectToMongo() {
   const client = new MongoClient(mongoURI);
@@ -23,8 +36,12 @@ async function connectToMongo() {
 app.use(cors());
 app.use(bodyParser.json());
 
+// Serve static files from the "webapp" folder
+app.use(express.static(path.join(__dirname, '../webapp')));
+
+// Serve the index.html file for the root route
 app.get('/', (req, res) => {
-  res.send('Hello from the Treasure Planet backend!');
+    res.sendFile(path.join(__dirname, '../webapp/index.html'));
 });
 
 app.post('/api/register', async (req, res) => {
